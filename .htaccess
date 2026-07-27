@@ -1,7 +1,10 @@
 # Mino CRM — remove index.php from URLs
 <IfModule mod_rewrite.c>
     RewriteEngine On
-    RewriteBase /minicrm/
+
+    # Hostinger / domain root: use /
+    # Local XAMPP subfolder: change to RewriteBase /minicrm/
+    RewriteBase /
 
     # Skip real files and directories
     RewriteCond %{REQUEST_FILENAME} !-f

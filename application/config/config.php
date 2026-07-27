@@ -23,7 +23,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | a PHP script and you can easily do that on your own.
 |
 */
-$config['base_url'] = 'http://localhost/minicrm/';
+/*
+| Auto base_url: works for local XAMPP (/minicrm/) and Hostinger (domain root).
+| Override with env MINO_BASE_URL if needed.
+*/
+if (getenv('MINO_BASE_URL'))
+{
+	$config['base_url'] = rtrim(getenv('MINO_BASE_URL'), '/') . '/';
+}
+else
+{
+	$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+	if (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']))
+	{
+		$scheme = strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https' ? 'https' : 'http';
+	}
+	$host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+	$script = isset($_SERVER['SCRIPT_NAME']) ? str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'])) : '';
+	$script = ($script === '/' || $script === '\\' || $script === '.') ? '' : rtrim($script, '/');
+	$config['base_url'] = $scheme . '://' . $host . $script . '/';
+}
 
 /*
 |--------------------------------------------------------------------------
@@ -411,7 +430,9 @@ $config['sess_regenerate_destroy'] = TRUE;
 $config['cookie_prefix']	= '';
 $config['cookie_domain']	= '';
 $config['cookie_path']		= '/';
-$config['cookie_secure']	= FALSE;
+// Secure cookies on HTTPS (Hostinger); off for local HTTP
+$config['cookie_secure']	= ( ! empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+	|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) === 'https');
 $config['cookie_httponly'] 	= TRUE;
 $config['cookie_samesite'] 	= 'Lax';
 

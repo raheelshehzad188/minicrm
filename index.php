@@ -53,7 +53,17 @@
  *
  * NOTE: If you change these, also change the error_reporting() code below
  */
-	define('ENVIRONMENT', isset($_SERVER['CI_ENV']) ? $_SERVER['CI_ENV'] : 'development');
+	// Auto: localhost = development, live host = production (override with CI_ENV)
+	if (isset($_SERVER['CI_ENV']))
+	{
+		define('ENVIRONMENT', $_SERVER['CI_ENV']);
+	}
+	else
+	{
+		$host = isset($_SERVER['HTTP_HOST']) ? strtolower($_SERVER['HTTP_HOST']) : 'localhost';
+		$is_local = (strpos($host, 'localhost') !== FALSE || $host === '127.0.0.1');
+		define('ENVIRONMENT', $is_local ? 'development' : 'production');
+	}
 
 /*
  *---------------------------------------------------------------
