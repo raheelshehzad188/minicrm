@@ -1,0 +1,92 @@
+/**
+ * Mino CRM — Typography
+ */
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: var(--mino-font);
+  font-size: var(--mino-fs-base);
+  font-weight: var(--mino-fw-normal);
+  line-height: var(--mino-lh);
+  color: var(--mino-text);
+  background-color: var(--mino-body-bg);
+}
+
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-family: var(--mino-font);
+  font-weight: var(--mino-fw-semibold);
+  line-height: var(--mino-lh-tight);
+  color: var(--mino-heading);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.02em;
+}
+
+h1, .h1 { font-size: var(--mino-fs-3xl); font-weight: var(--mino-fw-bold); }
+h2, .h2 { font-size: var(--mino-fs-2xl); }
+h3, .h3 { font-size: var(--mino-fs-xl); }
+h4, .h4 { font-size: var(--mino-fs-lg); }
+h5, .h5 { font-size: var(--mino-fs-md); }
+h6, .h6 { font-size: var(--mino-fs-base); text-transform: uppercase; letter-spacing: 0.04em; color: var(--mino-text-muted); }
+
+p {
+  margin-bottom: var(--space-4);
+  color: var(--mino-text-secondary);
+}
+
+.mino-text-lead {
+  font-size: var(--mino-fs-lg);
+  color: var(--mino-text-secondary);
+  line-height: 1.6;
+}
+
+.mino-text-sm { font-size: var(--mino-fs-sm); }
+.mino-text-xs { font-size: var(--mino-fs-xs); }
+.mino-text-muted { color: var(--mino-text-muted) !important; }
+.mino-text-secondary { color: var(--mino-text-secondary) !important; }
+.mino-text-heading { color: var(--mino-heading) !important; }
+
+.label,
+.form-label {
+  display: block;
+  font-size: var(--mino-fs-sm);
+  font-weight: var(--mino-fw-medium);
+  color: var(--mino-text-secondary);
+  margin-bottom: var(--space-2);
+}
+
+.mino-page-title {
+  font-size: var(--mino-fs-2xl);
+  font-weight: var(--mino-fw-bold);
+  color: var(--mino-heading);
+  margin: 0;
+  letter-spacing: -0.025em;
+}
+
+.mino-page-subtitle {
+  font-size: var(--mino-fs-sm);
+  color: var(--mino-text-muted);
+  margin: var(--space-1) 0 0;
+}
+
+.table {
+  font-size: var(--mino-fs-sm);
+  color: var(--mino-text);
+}
+
+.table th {
+  font-weight: var(--mino-fw-semibold);
+  font-size: var(--mino-fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--mino-text-muted);
+}
+
+code, .mono {
+  font-family: var(--mino-font-mono);
+  font-size: 0.9em;
+}

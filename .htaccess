@@ -1,0 +1,17 @@
+# Mino CRM — remove index.php from URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /minicrm/
+
+    # Skip real files and directories
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Route everything else through index.php
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
+
+# Deny access to sensitive files if present
+<FilesMatch "^\.">
+    Require all denied
+</FilesMatch>

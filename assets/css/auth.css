@@ -1,0 +1,211 @@
+/**
+ * Mino CRM — Auth / Login
+ */
+
+.mino-auth {
+  min-height: 100vh;
+  display: flex;
+  background: var(--mino-body-bg);
+}
+
+.mino-auth__visual {
+  display: none;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(145deg, rgba(15, 118, 110, 0.92) 0%, rgba(15, 23, 42, 0.88) 100%),
+    url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  color: #fff;
+  padding: var(--space-8);
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.mino-auth__visual-brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.mino-auth__visual-brand img { width: 44px; height: 44px; }
+.mino-auth__visual-brand span {
+  font-size: var(--mino-fs-xl);
+  font-weight: var(--mino-fw-bold);
+  letter-spacing: -0.03em;
+}
+
+.mino-auth__visual-content { max-width: 440px; }
+.mino-auth__visual-content h1 {
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: var(--mino-fw-bold);
+  color: #fff;
+  margin-bottom: var(--space-4);
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+.mino-auth__visual-content p {
+  font-size: var(--mino-fs-md);
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.mino-auth__visual-stats {
+  display: flex;
+  gap: var(--space-6);
+}
+.mino-auth__visual-stats div strong {
+  display: block;
+  font-size: var(--mino-fs-2xl);
+  font-weight: var(--mino-fw-bold);
+}
+.mino-auth__visual-stats div span {
+  font-size: var(--mino-fs-sm);
+  opacity: 0.75;
+}
+
+.mino-auth__form-panel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: var(--mino-surface);
+  position: relative;
+}
+
+.mino-auth__theme-toggle {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+}
+
+.mino-auth__form-wrap {
+  width: 100%;
+  max-width: 400px;
+  animation: mino-fade-in 0.5s var(--mino-ease);
+}
+
+.mino-auth__logo-mobile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+.mino-auth__logo-mobile img { width: 36px; height: 36px; }
+.mino-auth__logo-mobile span {
+  font-size: var(--mino-fs-lg);
+  font-weight: var(--mino-fw-bold);
+  color: var(--mino-heading);
+}
+.mino-auth__logo-mobile span em {
+  font-style: normal;
+  color: var(--mino-primary);
+}
+
+.mino-auth__welcome h2 {
+  font-size: var(--mino-fs-2xl);
+  font-weight: var(--mino-fw-bold);
+  margin-bottom: var(--space-2);
+}
+.mino-auth__welcome p {
+  color: var(--mino-text-muted);
+  margin-bottom: var(--space-6);
+  font-size: var(--mino-fs-sm);
+}
+
+.mino-auth__form .form-group { margin-bottom: var(--space-4); }
+.mino-auth__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-5);
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+.mino-auth__forgot {
+  font-size: var(--mino-fs-sm);
+  font-weight: var(--mino-fw-medium);
+}
+.mino-auth__submit { margin-bottom: var(--space-5); }
+.mino-auth__footer {
+  text-align: center;
+  font-size: var(--mino-fs-sm);
+  color: var(--mino-text-muted);
+}
+
+.mino-auth__demo {
+  margin-top: var(--space-5);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--mino-border);
+}
+
+.mino-auth__demo-title {
+  font-size: var(--mino-fs-sm);
+  font-weight: var(--mino-fw-semibold);
+  color: var(--mino-heading);
+  margin-bottom: var(--space-1);
+}
+
+.mino-auth__demo-hint {
+  font-size: var(--mino-fs-xs);
+  color: var(--mino-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.mino-auth__demo-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mino-fs-xs);
+}
+
+.mino-auth__demo-table th {
+  text-align: left;
+  padding: var(--space-2);
+  color: var(--mino-text-muted);
+  font-weight: var(--mino-fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--mino-border);
+}
+
+.mino-auth__demo-table td {
+  padding: var(--space-2);
+  border-bottom: 1px solid var(--mino-border);
+  vertical-align: middle;
+  color: var(--mino-text-secondary);
+}
+
+.mino-auth__demo-table tbody tr {
+  cursor: pointer;
+  transition: background var(--mino-duration) var(--mino-ease);
+}
+
+.mino-auth__demo-table tbody tr:hover,
+.mino-auth__demo-table tbody tr.is-selected {
+  background: var(--mino-primary-soft);
+}
+
+.mino-auth__demo-table .demo-email {
+  display: block;
+  color: var(--mino-text-muted);
+  font-size: 0.7rem;
+  margin-top: 1px;
+}
+
+.mino-auth__demo-pass {
+  margin-top: var(--space-3);
+  font-size: var(--mino-fs-xs);
+  color: var(--mino-text-muted);
+  text-align: center;
+}
+
+@media (min-width: 992px) {
+  .mino-auth__visual { display: flex; }
+  .mino-auth__logo-mobile { display: none; }
+  .mino-auth__form-panel { flex: 0 0 480px; max-width: 560px; }
+}
+
+@media (min-width: 1200px) {
+  .mino-auth__form-panel { flex: 0 0 540px; max-width: 580px; }
+}

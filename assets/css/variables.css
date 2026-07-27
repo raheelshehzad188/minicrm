@@ -1,0 +1,189 @@
+/**
+ * Mino CRM — Design Tokens
+ * CSS Variables for Light & Dark themes
+ * 8px spacing grid
+ */
+
+:root {
+  /* Brand */
+  --mino-primary: #0F766E;
+  --mino-primary-hover: #0D9488;
+  --mino-primary-active: #115E59;
+  --mino-primary-soft: rgba(15, 118, 110, 0.12);
+  --mino-primary-rgb: 15, 118, 110;
+
+  /* Semantic */
+  --mino-success: #059669;
+  --mino-success-soft: rgba(5, 150, 105, 0.12);
+  --mino-danger: #DC2626;
+  --mino-danger-soft: rgba(220, 38, 38, 0.12);
+  --mino-warning: #D97706;
+  --mino-warning-soft: rgba(217, 119, 6, 0.12);
+  --mino-info: #0284C7;
+  --mino-info-soft: rgba(2, 132, 199, 0.12);
+
+  /* Neutrals */
+  --mino-dark: #0F172A;
+  --mino-light: #F8FAFC;
+  --mino-gray-50: #F8FAFC;
+  --mino-gray-100: #F1F5F9;
+  --mino-gray-200: #E2E8F0;
+  --mino-gray-300: #CBD5E1;
+  --mino-gray-400: #94A3B8;
+  --mino-gray-500: #64748B;
+  --mino-gray-600: #475569;
+  --mino-gray-700: #334155;
+  --mino-gray-800: #1E293B;
+  --mino-gray-900: #0F172A;
+
+  /* Surfaces — Light */
+  --mino-body-bg: #F1F5F9;
+  --mino-surface: #FFFFFF;
+  --mino-surface-2: #F8FAFC;
+  --mino-surface-hover: #F1F5F9;
+  --mino-border: #E2E8F0;
+  --mino-border-strong: #CBD5E1;
+  --mino-divider: #E2E8F0;
+
+  /* Text — Light */
+  --mino-text: #0F172A;
+  --mino-text-secondary: #475569;
+  --mino-text-muted: #64748B;
+  --mino-text-inverse: #FFFFFF;
+  --mino-heading: #0F172A;
+
+  /* Layout */
+  --mino-sidebar-width: 260px;
+  --mino-sidebar-collapsed: 72px;
+  --mino-navbar-height: 64px;
+  --mino-right-panel-width: 300px;
+  --mino-footer-height: 48px;
+  --mino-content-max: 1440px;
+
+  /* Radius (10–12px) */
+  --mino-radius-sm: 6px;
+  --mino-radius: 10px;
+  --mino-radius-lg: 12px;
+  --mino-radius-xl: 16px;
+  --mino-radius-pill: 999px;
+
+  /* Shadows — soft */
+  --mino-shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --mino-shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --mino-shadow: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --mino-shadow-md: 0 8px 24px rgba(15, 23, 42, 0.08), 0 2px 6px rgba(15, 23, 42, 0.04);
+  --mino-shadow-lg: 0 16px 40px rgba(15, 23, 42, 0.1), 0 4px 12px rgba(15, 23, 42, 0.05);
+  --mino-shadow-focus: 0 0 0 3px rgba(15, 118, 110, 0.22);
+
+  /* Spacing (8px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 40px;
+  --space-8: 48px;
+  --space-10: 64px;
+  --space-12: 96px;
+
+  /* Typography */
+  --mino-font: 'Plus Jakarta Sans', 'Segoe UI', sans-serif;
+  --mino-font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+  --mino-fs-xs: 0.75rem;
+  --mino-fs-sm: 0.8125rem;
+  --mino-fs-base: 0.875rem;
+  --mino-fs-md: 1rem;
+  --mino-fs-lg: 1.125rem;
+  --mino-fs-xl: 1.25rem;
+  --mino-fs-2xl: 1.5rem;
+  --mino-fs-3xl: 1.875rem;
+  --mino-fs-4xl: 2.25rem;
+  --mino-lh: 1.5;
+  --mino-lh-tight: 1.25;
+  --mino-fw-normal: 400;
+  --mino-fw-medium: 500;
+  --mino-fw-semibold: 600;
+  --mino-fw-bold: 700;
+
+  /* Transitions */
+  --mino-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --mino-duration: 200ms;
+  --mino-duration-slow: 320ms;
+  --mino-transition: all var(--mino-duration) var(--mino-ease);
+
+  /* Z-index */
+  --mino-z-dropdown: 1000;
+  --mino-z-sticky: 1020;
+  --mino-z-fixed: 1030;
+  --mino-z-sidebar: 1040;
+  --mino-z-overlay: 1050;
+  --mino-z-modal: 1060;
+  --mino-z-toast: 1070;
+
+  /* Form */
+  --mino-input-height: 42px;
+  --mino-input-bg: #FFFFFF;
+  --mino-input-border: #E2E8F0;
+  --mino-input-focus: var(--mino-primary);
+
+  /* Bootstrap bridge */
+  --bs-primary: var(--mino-primary);
+  --bs-success: var(--mino-success);
+  --bs-danger: var(--mino-danger);
+  --bs-warning: var(--mino-warning);
+  --bs-info: var(--mino-info);
+  --bs-body-font-family: var(--mino-font);
+  --bs-body-color: var(--mino-text);
+  --bs-body-bg: var(--mino-body-bg);
+  --bs-border-radius: var(--mino-radius);
+  --bs-border-color: var(--mino-border);
+  --bs-link-color: var(--mino-primary);
+}
+
+/* Dark Mode */
+[data-theme="dark"] {
+  --mino-primary: #2DD4BF;
+  --mino-primary-hover: #5EEAD4;
+  --mino-primary-active: #14B8A6;
+  --mino-primary-soft: rgba(45, 212, 191, 0.15);
+  --mino-primary-rgb: 45, 212, 191;
+
+  --mino-success: #34D399;
+  --mino-success-soft: rgba(52, 211, 153, 0.15);
+  --mino-danger: #F87171;
+  --mino-danger-soft: rgba(248, 113, 113, 0.15);
+  --mino-warning: #FBBF24;
+  --mino-warning-soft: rgba(251, 191, 36, 0.15);
+  --mino-info: #38BDF8;
+  --mino-info-soft: rgba(56, 189, 248, 0.15);
+
+  --mino-body-bg: #0B1220;
+  --mino-surface: #111827;
+  --mino-surface-2: #0F172A;
+  --mino-surface-hover: #1E293B;
+  --mino-border: #1E293B;
+  --mino-border-strong: #334155;
+  --mino-divider: #1E293B;
+
+  --mino-text: #F1F5F9;
+  --mino-text-secondary: #CBD5E1;
+  --mino-text-muted: #94A3B8;
+  --mino-text-inverse: #0F172A;
+  --mino-heading: #F8FAFC;
+
+  --mino-shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --mino-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.35);
+  --mino-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+  --mino-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --mino-shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.45);
+  --mino-shadow-focus: 0 0 0 3px rgba(45, 212, 191, 0.28);
+
+  --mino-input-bg: #0F172A;
+  --mino-input-border: #334155;
+
+  --bs-body-color: var(--mino-text);
+  --bs-body-bg: var(--mino-body-bg);
+  --bs-border-color: var(--mino-border);
+  --bs-primary: var(--mino-primary);
+}

@@ -1,0 +1,109 @@
+/**
+ * Mino CRM — Leads module styles
+ */
+
+.lead-bulk-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--mino-primary-soft);
+  border: 1px solid var(--mino-border);
+  border-radius: var(--mino-radius);
+}
+
+.lead-info-row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--mino-border);
+  font-size: var(--mino-fs-sm);
+}
+.lead-info-row:last-child { border-bottom: 0; }
+.lead-info-row span {
+  color: var(--mino-text-muted);
+  flex-shrink: 0;
+}
+.lead-info-row strong {
+  text-align: right;
+  font-weight: var(--mino-fw-medium);
+  color: var(--mino-heading);
+  word-break: break-word;
+}
+
+.lead-note-editor {
+  min-height: 100px;
+  max-height: 220px;
+  overflow: auto;
+}
+.lead-note-editor:empty:before {
+  content: attr(data-placeholder);
+  color: var(--mino-text-muted);
+}
+.lead-note-body {
+  font-size: var(--mino-fs-sm);
+  color: var(--mino-text-secondary);
+  word-break: break-word;
+}
+
+.lead-kanban {
+  display: flex;
+  gap: var(--space-3);
+  overflow-x: auto;
+  padding-bottom: var(--space-3);
+  min-height: 420px;
+}
+.lead-kanban-col {
+  flex: 0 0 280px;
+  background: var(--mino-surface);
+  border: 1px solid var(--mino-border);
+  border-radius: var(--mino-radius-lg);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 240px);
+}
+.lead-kanban-col__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 3px solid var(--mino-primary);
+  font-weight: var(--mino-fw-semibold);
+  font-size: var(--mino-fs-sm);
+}
+.lead-kanban-col__body {
+  padding: var(--space-3);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 120px;
+}
+.lead-kanban-card {
+  background: var(--mino-bg);
+  border: 1px solid var(--mino-border);
+  border-radius: var(--mino-radius);
+  padding: var(--space-3);
+  margin-bottom: var(--space-3);
+  cursor: grab;
+  box-shadow: var(--mino-shadow-xs);
+}
+.lead-kanban-card:active { cursor: grabbing; }
+.lead-kanban-ghost {
+  opacity: 0.5;
+  border-style: dashed;
+}
+
+.lead-profile .nav-tabs .nav-link {
+  font-size: var(--mino-fs-sm);
+  color: var(--mino-text-secondary);
+}
+.lead-profile .nav-tabs .nav-link.active {
+  color: var(--mino-primary);
+  border-color: var(--mino-border) var(--mino-border) var(--mino-surface);
+}
+
+@media (max-width: 767.98px) {
+  .lead-kanban-col { flex-basis: 240px; }
+}

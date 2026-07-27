@@ -1,0 +1,14 @@
+/**
+ * Mino CRM — Main Stylesheet
+ * Imports the complete design system
+ */
+
+@import url('variables.css');
+@import url('typography.css');
+@import url('utilities.css');
+@import url('components.css');
+@import url('layout.css');
+@import url('auth.css');
+@import url('dashboard.css');
+@import url('animations.css');
+@import url('leads.css');

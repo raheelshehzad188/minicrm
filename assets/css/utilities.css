@@ -1,0 +1,158 @@
+/**
+ * Mino CRM — Utility Classes
+ * Spacing (8px grid), radius, shadows, colors, flex
+ */
+
+/* Spacing */
+.m-0 { margin: 0 !important; }
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.ms-0 { margin-left: 0 !important; }
+.me-0 { margin-right: 0 !important; }
+
+.m-1 { margin: var(--space-1) !important; }
+.m-2 { margin: var(--space-2) !important; }
+.m-3 { margin: var(--space-3) !important; }
+.m-4 { margin: var(--space-4) !important; }
+.m-5 { margin: var(--space-5) !important; }
+.m-6 { margin: var(--space-6) !important; }
+
+.mt-1 { margin-top: var(--space-1) !important; }
+.mt-2 { margin-top: var(--space-2) !important; }
+.mt-3 { margin-top: var(--space-3) !important; }
+.mt-4 { margin-top: var(--space-4) !important; }
+.mt-5 { margin-top: var(--space-5) !important; }
+.mt-6 { margin-top: var(--space-6) !important; }
+
+.mb-1 { margin-bottom: var(--space-1) !important; }
+.mb-2 { margin-bottom: var(--space-2) !important; }
+.mb-3 { margin-bottom: var(--space-3) !important; }
+.mb-4 { margin-bottom: var(--space-4) !important; }
+.mb-5 { margin-bottom: var(--space-5) !important; }
+.mb-6 { margin-bottom: var(--space-6) !important; }
+
+.ms-1 { margin-left: var(--space-1) !important; }
+.ms-2 { margin-left: var(--space-2) !important; }
+.ms-3 { margin-left: var(--space-3) !important; }
+.ms-4 { margin-left: var(--space-4) !important; }
+
+.me-1 { margin-right: var(--space-1) !important; }
+.me-2 { margin-right: var(--space-2) !important; }
+.me-3 { margin-right: var(--space-3) !important; }
+.me-4 { margin-right: var(--space-4) !important; }
+
+.p-0 { padding: 0 !important; }
+.p-1 { padding: var(--space-1) !important; }
+.p-2 { padding: var(--space-2) !important; }
+.p-3 { padding: var(--space-3) !important; }
+.p-4 { padding: var(--space-4) !important; }
+.p-5 { padding: var(--space-5) !important; }
+.p-6 { padding: var(--space-6) !important; }
+
+.px-2 { padding-left: var(--space-2) !important; padding-right: var(--space-2) !important; }
+.px-3 { padding-left: var(--space-3) !important; padding-right: var(--space-3) !important; }
+.px-4 { padding-left: var(--space-4) !important; padding-right: var(--space-4) !important; }
+.px-5 { padding-left: var(--space-5) !important; padding-right: var(--space-5) !important; }
+
+.py-2 { padding-top: var(--space-2) !important; padding-bottom: var(--space-2) !important; }
+.py-3 { padding-top: var(--space-3) !important; padding-bottom: var(--space-3) !important; }
+.py-4 { padding-top: var(--space-4) !important; padding-bottom: var(--space-4) !important; }
+.py-5 { padding-top: var(--space-5) !important; padding-bottom: var(--space-5) !important; }
+
+.gap-1 { gap: var(--space-1) !important; }
+.gap-2 { gap: var(--space-2) !important; }
+.gap-3 { gap: var(--space-3) !important; }
+.gap-4 { gap: var(--space-4) !important; }
+.gap-5 { gap: var(--space-5) !important; }
+
+/* Border Radius */
+.rounded-sm { border-radius: var(--mino-radius-sm) !important; }
+.rounded { border-radius: var(--mino-radius) !important; }
+.rounded-lg { border-radius: var(--mino-radius-lg) !important; }
+.rounded-xl { border-radius: var(--mino-radius-xl) !important; }
+.rounded-pill { border-radius: var(--mino-radius-pill) !important; }
+
+/* Shadows */
+.shadow-xs { box-shadow: var(--mino-shadow-xs) !important; }
+.shadow-sm { box-shadow: var(--mino-shadow-sm) !important; }
+.shadow { box-shadow: var(--mino-shadow) !important; }
+.shadow-md { box-shadow: var(--mino-shadow-md) !important; }
+.shadow-lg { box-shadow: var(--mino-shadow-lg) !important; }
+.shadow-none { box-shadow: none !important; }
+
+/* Text Colors */
+.text-primary { color: var(--mino-primary) !important; }
+.text-success { color: var(--mino-success) !important; }
+.text-danger { color: var(--mino-danger) !important; }
+.text-warning { color: var(--mino-warning) !important; }
+.text-info { color: var(--mino-info) !important; }
+.text-dark { color: var(--mino-dark) !important; }
+.text-light { color: var(--mino-light) !important; }
+.text-white { color: #fff !important; }
+
+/* Background Colors */
+.bg-primary { background-color: var(--mino-primary) !important; }
+.bg-primary-soft { background-color: var(--mino-primary-soft) !important; }
+.bg-success { background-color: var(--mino-success) !important; }
+.bg-success-soft { background-color: var(--mino-success-soft) !important; }
+.bg-danger { background-color: var(--mino-danger) !important; }
+.bg-danger-soft { background-color: var(--mino-danger-soft) !important; }
+.bg-warning { background-color: var(--mino-warning) !important; }
+.bg-warning-soft { background-color: var(--mino-warning-soft) !important; }
+.bg-info { background-color: var(--mino-info) !important; }
+.bg-info-soft { background-color: var(--mino-info-soft) !important; }
+.bg-surface { background-color: var(--mino-surface) !important; }
+.bg-surface-2 { background-color: var(--mino-surface-2) !important; }
+.bg-body { background-color: var(--mino-body-bg) !important; }
+
+/* Flex */
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+.flex-column { flex-direction: column !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+.flex-grow-1 { flex-grow: 1 !important; }
+.flex-shrink-0 { flex-shrink: 0 !important; }
+.align-items-center { align-items: center !important; }
+.align-items-start { align-items: flex-start !important; }
+.align-items-end { align-items: flex-end !important; }
+.justify-content-between { justify-content: space-between !important; }
+.justify-content-center { justify-content: center !important; }
+.justify-content-end { justify-content: flex-end !important; }
+.justify-content-start { justify-content: flex-start !important; }
+
+/* Display / Width */
+.w-100 { width: 100% !important; }
+.h-100 { height: 100% !important; }
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+
+@media (min-width: 768px) {
+  .d-md-block { display: block !important; }
+  .d-md-flex { display: flex !important; }
+  .d-md-none { display: none !important; }
+}
+
+@media (min-width: 992px) {
+  .d-lg-block { display: block !important; }
+  .d-lg-flex { display: flex !important; }
+  .d-lg-none { display: none !important; }
+}
+
+/* Borders */
+.border { border: 1px solid var(--mino-border) !important; }
+.border-0 { border: 0 !important; }
+.border-top { border-top: 1px solid var(--mino-border) !important; }
+.border-bottom { border-bottom: 1px solid var(--mino-border) !important; }
+
+/* Misc */
+.overflow-hidden { overflow: hidden !important; }
+.position-relative { position: relative !important; }
+.cursor-pointer { cursor: pointer !important; }
+.fw-medium { font-weight: var(--mino-fw-medium) !important; }
+.fw-semibold { font-weight: var(--mino-fw-semibold) !important; }
+.fw-bold { font-weight: var(--mino-fw-bold) !important; }
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
