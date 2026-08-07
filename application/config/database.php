@@ -76,14 +76,12 @@ elseif ($is_local)
 else
 {
 	/*
-	| Hostinger fallback — KEEP your live credentials here on the server.
-	| Do not commit real passwords to git. After deploy, edit this block on Hostinger
-	| (or use env vars above).
+	| Hostinger / live — used when HTTP_HOST is not localhost.
 	*/
 	$db['default'] = array_merge($shared, array(
 		'hostname' => 'localhost',
 		'username' => 'u293323553_minicrm',
-		'password' => 'CHANGE_ME_HOSTINGER_DB_PASSWORD',
+		'password' => '@@Code@@1435',
 		'database' => 'u293323553_minicrm',
 		'db_debug' => FALSE,
 	));
