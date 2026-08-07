@@ -17,12 +17,15 @@ class Dashboard_lib {
 	/**
 	 * Build dashboard context for model queries
 	 */
-	public function build_context($range = NULL, $start_date = NULL, $end_date = NULL)
+	public function build_context($range = NULL, $start_date = NULL, $end_date = NULL, $lead_type = NULL)
 	{
 		$range = $range ?: $this->CI->config->item('dashboard_default_range');
 		$dates = $this->parse_date_range($range, $start_date, $end_date);
 
 		$role_slug = (string) $this->CI->session->userdata('role_slug');
+
+		$this->CI->load->library('Lead_lib');
+		$lead_type = $this->CI->lead_lib->normalize_lead_type($lead_type);
 
 		return array(
 			'org_id'       => (int) current_org_id(),
@@ -39,6 +42,7 @@ class Dashboard_lib {
 			'range_label'  => $dates['label'],
 			'date_start'   => $dates['start'],
 			'date_end'     => $dates['end'],
+			'lead_type'    => $lead_type ?: '',
 			'permissions'  => $this->CI->session->userdata('permissions') ?: array(),
 		);
 	}
@@ -187,6 +191,8 @@ class Dashboard_lib {
 
 		$perm_map = array(
 			'total_leads'      => 'leads.view',
+			'clinic_leads'     => 'leads.view',
+			'academy_leads'    => 'leads.view',
 			'new_leads'        => 'leads.view',
 			'qualified_leads'  => 'leads.view',
 			'won_deals'        => 'deals.view',

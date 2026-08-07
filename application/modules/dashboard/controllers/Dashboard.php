@@ -55,8 +55,9 @@ class Dashboard extends Auth_Controller {
 		$range      = $this->input->get('range', TRUE);
 		$start_date = $this->input->get('start_date', TRUE);
 		$end_date   = $this->input->get('end_date', TRUE);
+		$lead_type  = $this->input->get('lead_type', TRUE);
 
-		$context = $this->dashboard_lib->build_context($range, $start_date, $end_date);
+		$context = $this->dashboard_lib->build_context($range, $start_date, $end_date, $lead_type);
 		$this->Dashboard_model->set_context($context);
 
 		$widgets = $this->dashboard_lib->visible_widgets($context);
@@ -66,6 +67,7 @@ class Dashboard extends Auth_Controller {
 				'range_label' => $context['range_label'],
 				'date_start'  => $context['date_start'],
 				'date_end'    => $context['date_end'],
+				'lead_type'   => $context['lead_type'],
 				'role_slug'   => $context['role_slug'],
 				'scope'       => $context['own_only'] ? 'own' : ($context['is_manager'] ? 'team' : 'org'),
 			),
@@ -148,6 +150,11 @@ class Dashboard extends Auth_Controller {
 	{
 		return '
 			<div class="dashboard-toolbar" id="dashboardToolbar">
+				<select class="form-select form-select-sm" id="dashLeadType" style="max-width:140px" aria-label="Lead type">
+					<option value="">All types</option>
+					<option value="clinic">Clinic</option>
+					<option value="academy">Academy</option>
+				</select>
 				<div class="btn-group dashboard-range-group" role="group" aria-label="Date range">
 					<button type="button" class="btn btn-sm btn-ghost dashboard-range-btn" data-range="today">Today</button>
 					<button type="button" class="btn btn-sm btn-ghost dashboard-range-btn" data-range="yesterday">Yesterday</button>

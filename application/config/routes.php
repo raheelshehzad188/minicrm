@@ -26,6 +26,7 @@ $route['auth/do_change_password'] = 'auth/do_change_password';
 $route['organization'] = 'organization/index';
 $route['organization/update'] = 'organization/update';
 $route['organization/upload_logo'] = 'organization/upload_logo';
+$route['organization/regenerate_api_key'] = 'organization/regenerate_api_key';
 
 /* Users */
 $route['users'] = 'users/index';
@@ -75,6 +76,14 @@ $route['leads/saved_filters'] = 'leads/saved_filters';
 $route['leads/save_filter'] = 'leads/save_filter';
 $route['leads/delete_filter/(:num)'] = 'leads/delete_filter/$1';
 $route['leads/stages_by_pipeline/(:num)'] = 'leads/stages_by_pipeline/$1';
+
+/* Reports */
+$route['reports'] = 'reports/index';
+$route['reports/leads'] = 'reports/leads';
+$route['reports/leads_data'] = 'reports/leads_data';
+
+/* API v1 */
+$route['api/v1/leads'] = 'api/leads/create';
 
 /* App */
 $route['dashboard'] = 'dashboard/index';

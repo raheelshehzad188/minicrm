@@ -20,15 +20,26 @@
           <div class="tab-content">
             <div class="tab-pane fade show active" id="tabLeadInfo">
               <div class="row g-3">
-                <div class="col-md-12">
-                  <label class="form-label">Lead title <span class="required">*</span></label>
+                <div class="col-md-4">
+                  <label class="form-label">Lead type <span class="required">*</span></label>
+                  <select class="form-select" name="lead_type" id="leadType" required>
+                    <?php
+                    $lead_types = isset($lead_types) ? $lead_types : array('clinic' => 'Clinic', 'academy' => 'Academy');
+                    foreach ($lead_types as $slug => $label):
+                    ?>
+                      <option value="<?php echo html_escape($slug); ?>"><?php echo html_escape($label); ?></option>
+                    <?php endforeach; ?>
+                  </select>
+                </div>
+                <div class="col-md-8">
+                  <label class="form-label" id="leadTitleLabel">Patient name <span class="required">*</span></label>
                   <input type="text" class="form-control" name="title" id="leadTitle" required>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 lead-crm-name">
                   <label class="form-label">First name</label>
                   <input type="text" class="form-control" name="first_name" id="leadFirstName">
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6 lead-crm-name">
                   <label class="form-label">Last name</label>
                   <input type="text" class="form-control" name="last_name" id="leadLastName">
                 </div>
@@ -43,6 +54,35 @@
                 <div class="col-md-3">
                   <label class="form-label">Mobile</label>
                   <input type="text" class="form-control" name="mobile" id="leadMobile">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Branch</label>
+                  <input type="text" class="form-control" name="branch" id="leadBranch" placeholder="e.g. Lahore Clinic">
+                </div>
+                <div class="col-md-6 lead-field-clinic">
+                  <label class="form-label">Treatment</label>
+                  <input type="text" class="form-control" name="treatment" id="leadTreatment" placeholder="e.g. HydraFacial">
+                </div>
+                <div class="col-md-6 lead-field-clinic">
+                  <label class="form-label">Appointment date</label>
+                  <input type="date" class="form-control" name="appointment_date" id="leadAppointmentDate">
+                </div>
+                <div class="col-md-6 lead-field-clinic">
+                  <label class="form-label">Appointment time</label>
+                  <input type="time" class="form-control" name="appointment_time" id="leadAppointmentTime">
+                </div>
+                <div class="col-md-6 lead-field-academy d-none">
+                  <label class="form-label">Course</label>
+                  <input type="text" class="form-control" name="course" id="leadCourse" placeholder="e.g. Advanced Aesthetic Course">
+                </div>
+                <div class="col-md-6 lead-field-academy d-none">
+                  <label class="form-label">Preferred batch</label>
+                  <select class="form-select" name="preferred_batch" id="leadPreferredBatch">
+                    <option value="">—</option>
+                    <option value="Morning">Morning</option>
+                    <option value="Evening">Evening</option>
+                    <option value="Weekend">Weekend</option>
+                  </select>
                 </div>
               </div>
             </div>
@@ -151,7 +191,7 @@
             </div>
             <div class="tab-pane fade" id="tabLeadMore">
               <div class="mb-3">
-                <label class="form-label">Description</label>
+                <label class="form-label">Notes</label>
                 <textarea class="form-control" name="description" id="leadDescription" rows="5"></textarea>
               </div>
               <?php if (!empty($custom_fields)): ?>

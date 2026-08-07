@@ -11,6 +11,40 @@ class Lead_lib {
 	public function __construct()
 	{
 		$this->CI =& get_instance();
+		$this->CI->config->load('leads', TRUE);
+	}
+
+	/**
+	 * Registered lead types (slug => label). Future types are added in config/leads.php.
+	 */
+	public function lead_types()
+	{
+		$types = $this->CI->config->item('lead_types', 'leads');
+		return is_array($types) ? $types : array('clinic' => 'Clinic', 'academy' => 'Academy');
+	}
+
+	public function default_lead_type()
+	{
+		$default = $this->CI->config->item('lead_type_default', 'leads');
+		return $default ?: 'clinic';
+	}
+
+	public function normalize_lead_type($type)
+	{
+		$type = strtolower(trim((string) $type));
+		$types = $this->lead_types();
+		if ($type === '' || ! isset($types[$type]))
+		{
+			return NULL;
+		}
+		return $type;
+	}
+
+	public function lead_type_label($type)
+	{
+		$types = $this->lead_types();
+		$type = $this->normalize_lead_type($type) ?: $type;
+		return isset($types[$type]) ? $types[$type] : ucfirst((string) $type);
 	}
 
 	/**
@@ -67,10 +101,11 @@ class Lead_lib {
 	public function timeline($lead_id, $event_type, $title, $description = NULL, $meta = NULL)
 	{
 		$this->CI->load->model('Lead_timeline_model');
+		$user_id = (int) current_user_id();
 		return $this->CI->Lead_timeline_model->add(array(
 			'organization_id' => (int) current_org_id(),
 			'lead_id'         => (int) $lead_id,
-			'user_id'         => (int) current_user_id(),
+			'user_id'         => $user_id > 0 ? $user_id : NULL,
 			'event_type'      => $event_type,
 			'title'           => $title,
 			'description'     => $description,

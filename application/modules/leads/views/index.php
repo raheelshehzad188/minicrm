@@ -18,6 +18,18 @@
           <input type="search" class="form-control form-control-sm" id="leadSearch" placeholder="Name, company, email, phone…">
         </div>
         <div class="col-6 col-md-2">
+          <label class="form-label mino-text-xs">Lead type</label>
+          <select class="form-select form-select-sm" id="filterLeadType">
+            <option value="">All</option>
+            <?php
+            $lead_types = isset($lead_types) ? $lead_types : array('clinic' => 'Clinic', 'academy' => 'Academy');
+            foreach ($lead_types as $slug => $label):
+            ?>
+              <option value="<?php echo html_escape($slug); ?>"><?php echo html_escape($label); ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="col-6 col-md-2">
           <label class="form-label mino-text-xs">Status</label>
           <select class="form-select form-select-sm" id="filterStatus">
             <option value="">All</option>
@@ -147,6 +159,7 @@
           <tr>
             <th style="width:36px"><input type="checkbox" class="form-check-input" id="leadCheckAll"></th>
             <th>Lead</th>
+            <th>Type</th>
             <th>Company</th>
             <th>Status</th>
             <th>Source</th>
@@ -176,6 +189,7 @@ window.MINO_LEADS = {
   isOwner: <?php echo !empty($is_owner) ? 'true' : 'false'; ?>,
   urls: <?php echo json_encode($urls); ?>,
   lookups: {
+    lead_types: <?php echo json_encode(isset($lead_types) ? $lead_types : array('clinic'=>'Clinic','academy'=>'Academy')); ?>,
     statuses: <?php echo json_encode(array_map(function($r){ return array('id'=>(int)$r->id,'name'=>$r->name,'color'=>$r->color); }, $statuses)); ?>,
     sources: <?php echo json_encode(array_map(function($r){ return array('id'=>(int)$r->id,'name'=>$r->name); }, $sources)); ?>,
     pipelines: <?php echo json_encode(array_map(function($r){ return array('id'=>(int)$r->id,'name'=>$r->name); }, $pipelines)); ?>,

@@ -146,6 +146,7 @@ CREATE TABLE IF NOT EXISTS `import_mappings` (
 CREATE TABLE IF NOT EXISTS `leads` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `organization_id` INT UNSIGNED NOT NULL,
+  `lead_type` VARCHAR(50) NOT NULL DEFAULT 'clinic',
   `title` VARCHAR(200) NOT NULL,
   `first_name` VARCHAR(100) DEFAULT NULL,
   `last_name` VARCHAR(100) DEFAULT NULL,
@@ -168,6 +169,12 @@ CREATE TABLE IF NOT EXISTS `leads` (
   `estimated_value` DECIMAL(15,2) DEFAULT NULL,
   `expected_close_date` DATE DEFAULT NULL,
   `description` TEXT NULL,
+  `branch` VARCHAR(150) DEFAULT NULL,
+  `treatment` VARCHAR(150) DEFAULT NULL,
+  `course` VARCHAR(150) DEFAULT NULL,
+  `preferred_batch` VARCHAR(100) DEFAULT NULL,
+  `appointment_date` DATE DEFAULT NULL,
+  `appointment_time` TIME DEFAULT NULL,
   `created_by` INT UNSIGNED DEFAULT NULL,
   `updated_by` INT UNSIGNED DEFAULT NULL,
   `deleted_at` DATETIME DEFAULT NULL,
@@ -176,6 +183,7 @@ CREATE TABLE IF NOT EXISTS `leads` (
   `updated_at` DATETIME DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_leads_org` (`organization_id`),
+  KEY `idx_leads_type` (`organization_id`,`lead_type`),
   KEY `idx_leads_status` (`lead_status_id`),
   KEY `idx_leads_source` (`lead_source_id`),
   KEY `idx_leads_pipeline` (`pipeline_id`),
@@ -186,6 +194,25 @@ CREATE TABLE IF NOT EXISTS `leads` (
   KEY `idx_leads_mobile` (`organization_id`,`mobile`),
   KEY `idx_leads_deleted` (`organization_id`,`deleted_at`),
   KEY `idx_leads_created` (`created_at`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS `webhook_logs` (
+  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `organization_id` INT UNSIGNED DEFAULT NULL,
+  `endpoint` VARCHAR(255) NOT NULL,
+  `method` VARCHAR(10) NOT NULL DEFAULT 'POST',
+  `request_payload` MEDIUMTEXT NULL,
+  `response_payload` MEDIUMTEXT NULL,
+  `response_code` SMALLINT UNSIGNED DEFAULT NULL,
+  `ip_address` VARCHAR(45) DEFAULT NULL,
+  `user_agent` VARCHAR(500) DEFAULT NULL,
+  `error_message` TEXT NULL,
+  `request_time` DATETIME NOT NULL,
+  `created_at` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_webhook_org` (`organization_id`),
+  KEY `idx_webhook_endpoint` (`endpoint`),
+  KEY `idx_webhook_time` (`request_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS `lead_tag_map` (

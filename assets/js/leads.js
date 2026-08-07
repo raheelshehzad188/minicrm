@@ -11,7 +11,7 @@
   var selected = {};
   var importRows = [];
   var columnVisibility = {
-    company: true, status: true, source: true, assignee: true, priority: true, value: true, created: true
+    type: true, company: true, status: true, source: true, assignee: true, priority: true, value: true, created: true
   };
 
   function csrfData(extra) {
@@ -41,6 +41,7 @@
   function filters() {
     return {
       search: $('#leadSearch').val() || '',
+      lead_type: $('#filterLeadType').val() || '',
       status_id: $('#filterStatus').val() || '',
       source_id: $('#filterSource').val() || '',
       assigned_to: $('#filterAssignee').val() || '',
@@ -52,6 +53,27 @@
       date_to: $('#filterDateTo').val() || '',
       trashed: $('#filterTrashed').val() || ''
     };
+  }
+
+  function leadTypeBadge(type, label) {
+    if (!type && !label) return '—';
+    var tone = type === 'academy' ? 'info' : 'primary';
+    return '<span class="mino-badge mino-badge-' + tone + '">' + escapeHtml(label || type) + '</span>';
+  }
+
+  function syncLeadTypeFields() {
+    var type = $('#leadType').val() || 'clinic';
+    var isClinic = type === 'clinic';
+    var isAcademy = type === 'academy';
+    $('.lead-field-clinic').toggleClass('d-none', !isClinic);
+    $('.lead-field-academy').toggleClass('d-none', !isAcademy);
+    if (isClinic) {
+      $('#leadTitleLabel').html('Patient name <span class="required">*</span>');
+    } else if (isAcademy) {
+      $('#leadTitleLabel').html('Student name <span class="required">*</span>');
+    } else {
+      $('#leadTitleLabel').html('Lead title <span class="required">*</span>');
+    }
   }
 
   function statusBadge(name, color) {
@@ -106,6 +128,11 @@
               '<div>' + tagChips(r.tags) + '</div></div></div>';
           }
         },
+        {
+          data: null,
+          visible: columnVisibility.type,
+          render: function (r) { return leadTypeBadge(r.lead_type, r.lead_type_label); }
+        },
         { data: 'company_name', defaultContent: '—', visible: columnVisibility.company },
         {
           data: null,
@@ -154,18 +181,19 @@
         }
       ],
       pageLength: 10,
-      order: [[8, 'desc']],
+      order: [[9, 'desc']],
       language: { search: '', searchPlaceholder: 'Filter table…', emptyTable: 'No leads found' }
     });
 
     var colMap = [
-      { key: 'company', label: 'Company', idx: 2 },
-      { key: 'status', label: 'Status', idx: 3 },
-      { key: 'source', label: 'Source', idx: 4 },
-      { key: 'assignee', label: 'Assignee', idx: 5 },
-      { key: 'priority', label: 'Priority', idx: 6 },
-      { key: 'value', label: 'Value', idx: 7 },
-      { key: 'created', label: 'Created', idx: 8 }
+      { key: 'type', label: 'Type', idx: 2 },
+      { key: 'company', label: 'Company', idx: 3 },
+      { key: 'status', label: 'Status', idx: 4 },
+      { key: 'source', label: 'Source', idx: 5 },
+      { key: 'assignee', label: 'Assignee', idx: 6 },
+      { key: 'priority', label: 'Priority', idx: 7 },
+      { key: 'value', label: 'Value', idx: 8 },
+      { key: 'created', label: 'Created', idx: 9 }
     ];
     var html = '';
     colMap.forEach(function (c) {
@@ -201,10 +229,12 @@
     $('#leadForm')[0].reset();
     $('#leadId').val('');
     $('#forceDuplicate').val('0');
+    $('#leadType').val('clinic');
     if ($('#leadTags').hasClass('select2-hidden-accessible')) {
       $('#leadTags').val(null).trigger('change');
     }
     filterStagesByPipeline();
+    syncLeadTypeFields();
     new bootstrap.Modal('#leadModal').show();
   }
 
@@ -216,12 +246,19 @@
       $('#leadModalTitle').text('Edit Lead');
       $('#leadId').val(l.id);
       $('#forceDuplicate').val('0');
+      $('#leadType').val(l.lead_type || 'clinic');
       $('#leadTitle').val(l.title);
       $('#leadFirstName').val(l.first_name);
       $('#leadLastName').val(l.last_name);
       $('#leadEmail').val(l.email);
       $('#leadPhone').val(l.phone);
       $('#leadMobile').val(l.mobile);
+      $('#leadBranch').val(l.branch || '');
+      $('#leadTreatment').val(l.treatment || '');
+      $('#leadCourse').val(l.course || '');
+      $('#leadPreferredBatch').val(l.preferred_batch || '');
+      $('#leadAppointmentDate').val(l.appointment_date || '');
+      $('#leadAppointmentTime').val(l.appointment_time ? String(l.appointment_time).substring(0, 5) : '');
       $('#leadCompany').val(l.company_name);
       $('#leadWebsite').val(l.website);
       $('#leadAddress').val(l.address);
@@ -246,6 +283,7 @@
           $('[data-cf="' + fid + '"]').val(l.custom_values[fid]);
         });
       }
+      syncLeadTypeFields();
       new bootstrap.Modal('#leadModal').show();
     });
   }
@@ -562,6 +600,8 @@
     }
 
     $('#leadPipeline').on('change', filterStagesByPipeline);
+    $('#leadType').on('change', syncLeadTypeFields);
+    syncLeadTypeFields();
 
     $(document).on('click', '#btnAddLead', openCreate);
     $(document).on('click', '.btn-edit-lead, #btnEditLeadProfile', function () {
@@ -591,7 +631,7 @@
     });
 
     var timer;
-    $('#leadSearch, #filterStatus, #filterSource, #filterAssignee, #filterPriority, #filterPipeline, #filterStage, #filterTag, #filterDateFrom, #filterDateTo, #filterTrashed')
+    $('#leadSearch, #filterLeadType, #filterStatus, #filterSource, #filterAssignee, #filterPriority, #filterPipeline, #filterStage, #filterTag, #filterDateFrom, #filterDateTo, #filterTrashed')
       .on('input change', function () {
         clearTimeout(timer);
         timer = setTimeout(function () {
@@ -627,6 +667,7 @@
       try {
         var f = JSON.parse(raw);
         $('#leadSearch').val(f.search || '');
+        $('#filterLeadType').val(f.lead_type || '');
         $('#filterStatus').val(f.status_id || '');
         $('#filterSource').val(f.source_id || '');
         $('#filterAssignee').val(f.assigned_to || '');

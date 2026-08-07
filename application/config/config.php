@@ -483,7 +483,9 @@ $config['csrf_token_name'] = 'mino_csrf';
 $config['csrf_cookie_name'] = 'mino_csrf_cookie';
 $config['csrf_expire'] = 7200;
 $config['csrf_regenerate'] = TRUE;
-$config['csrf_exclude_uris'] = array();
+$config['csrf_exclude_uris'] = array(
+	'api/v1/leads',
+);
 
 /*
 |--------------------------------------------------------------------------

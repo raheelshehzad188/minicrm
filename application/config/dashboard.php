@@ -24,6 +24,8 @@ $config['dashboard_widgets'] = array(
 
 $config['dashboard_kpi_keys'] = array(
 	'total_leads',
+	'clinic_leads',
+	'academy_leads',
 	'new_leads',
 	'qualified_leads',
 	'won_deals',

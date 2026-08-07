@@ -88,9 +88,25 @@ class Dashboard_model extends CI_Model {
 				'label' => 'Total Leads',
 				'icon'  => 'fa-bullseye',
 				'tone'  => 'primary',
-				'value' => function () { return $this->placeholder_count('total_leads', 120, 2800); },
+				'value' => function () { return $this->count_leads(NULL); },
 				'meta'  => function () use ($ctx) { return $ctx['own_only'] ? 'Assigned to you' : 'In selected period'; },
-				'trend' => function () { return array('direction' => 'up', 'label' => '12.5% vs prior'); },
+				'trend' => function () { return array('direction' => 'neutral', 'label' => 'Live count'); },
+			),
+			'clinic_leads' => array(
+				'label' => 'Clinic Leads',
+				'icon'  => 'fa-spa',
+				'tone'  => 'success',
+				'value' => function () { return $this->count_leads('clinic'); },
+				'meta'  => function () { return 'Patient leads'; },
+				'trend' => function () { return array('direction' => 'neutral', 'label' => 'Clinic'); },
+			),
+			'academy_leads' => array(
+				'label' => 'Academy Leads',
+				'icon'  => 'fa-graduation-cap',
+				'tone'  => 'info',
+				'value' => function () { return $this->count_leads('academy'); },
+				'meta'  => function () { return 'Student leads'; },
+				'trend' => function () { return array('direction' => 'neutral', 'label' => 'Academy'); },
 			),
 			'new_leads' => array(
 				'label' => 'New Leads',
@@ -447,7 +463,48 @@ class Dashboard_model extends CI_Model {
 
 	public function get_table_leads($limit = 8)
 	{
-		return $this->placeholder_table_rows('leads', $limit);
+		$this->load->model('Lead_model');
+		$this->load->library('Lead_lib');
+
+		$filters = array(
+			'date_from' => $this->context['date_start'],
+			'date_to'   => $this->context['date_end'],
+			'limit'     => $limit,
+			'offset'    => 0,
+		);
+		if ( ! empty($this->context['lead_type']))
+		{
+			$filters['lead_type'] = $this->context['lead_type'];
+		}
+		if ( ! empty($this->context['own_only']))
+		{
+			$filters['assigned_to'] = $this->context['user_id'];
+		}
+
+		$rows = $this->Lead_model->datatable($filters);
+		$out = array();
+		foreach ($rows as $i => $row)
+		{
+			$name = trim(($row->first_name ?: '') . ' ' . ($row->last_name ?: ''));
+			if ($name === '')
+			{
+				$name = $row->title;
+			}
+			$out[] = array(
+				'id'          => (int) $row->id,
+				'name'        => $name,
+				'email'       => $row->email,
+				'company'     => $row->company_name ?: ($row->branch ?: '—'),
+				'status'      => $row->status_name ?: '—',
+				'status_tone' => 'primary',
+				'initials'    => user_initials($name),
+				'col_a'       => isset($row->lead_type) ? ucfirst($row->lead_type) : '—',
+				'col_b'       => $row->assignee_name ?: 'Unassigned',
+				'col_c'       => $row->source_name ?: '—',
+				'placeholder' => FALSE,
+			);
+		}
+		return $out;
 	}
 
 	public function get_table_contacts($limit = 8)
@@ -502,6 +559,38 @@ class Dashboard_model extends CI_Model {
 		}
 
 		return $out;
+	}
+
+	/**
+	 * Real lead counts by type (respects date range, visibility, optional type filter).
+	 */
+	protected function count_leads($lead_type = NULL)
+	{
+		$this->load->model('Lead_model');
+		$this->load->library('Lead_lib');
+
+		// When dashboard is filtered to a type, hide the other type widget count
+		if ($lead_type && ! empty($this->context['lead_type']) && $this->context['lead_type'] !== $lead_type)
+		{
+			return 0;
+		}
+
+		$type = $lead_type;
+		if ( ! $type && ! empty($this->context['lead_type']))
+		{
+			$type = $this->context['lead_type'];
+		}
+
+		$filters = array(
+			'date_from' => $this->context['date_start'],
+			'date_to'   => $this->context['date_end'],
+		);
+		if ( ! empty($this->context['own_only']))
+		{
+			$filters['assigned_to'] = $this->context['user_id'];
+		}
+
+		return $this->Lead_model->count_by_type($type, $filters);
 	}
 
 	protected function count_active_users()

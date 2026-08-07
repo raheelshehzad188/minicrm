@@ -31,9 +31,24 @@ $is_trashed = !empty($lead->deleted_at);
           <?php endif; ?>
         </div>
         <div class="mino-card-body border-top">
+          <div class="lead-info-row"><span>Lead type</span><strong><?php
+            $lt = isset($lead->lead_type) ? $lead->lead_type : 'clinic';
+            echo html_escape(ucfirst($lt));
+          ?></strong></div>
           <div class="lead-info-row"><span>Email</span><strong><?php echo html_escape($lead->email ?: '—'); ?></strong></div>
           <div class="lead-info-row"><span>Phone</span><strong><?php echo html_escape($lead->phone ?: '—'); ?></strong></div>
           <div class="lead-info-row"><span>Mobile</span><strong><?php echo html_escape($lead->mobile ?: '—'); ?></strong></div>
+          <div class="lead-info-row"><span>Branch</span><strong><?php echo html_escape(isset($lead->branch) ? ($lead->branch ?: '—') : '—'); ?></strong></div>
+          <?php if (isset($lead->lead_type) && $lead->lead_type === 'clinic'): ?>
+          <div class="lead-info-row"><span>Treatment</span><strong><?php echo html_escape($lead->treatment ?: '—'); ?></strong></div>
+          <div class="lead-info-row"><span>Appointment</span><strong><?php
+            $appt = trim(($lead->appointment_date ?: '') . ' ' . ($lead->appointment_time ? substr($lead->appointment_time, 0, 5) : ''));
+            echo html_escape($appt ?: '—');
+          ?></strong></div>
+          <?php elseif (isset($lead->lead_type) && $lead->lead_type === 'academy'): ?>
+          <div class="lead-info-row"><span>Course</span><strong><?php echo html_escape($lead->course ?: '—'); ?></strong></div>
+          <div class="lead-info-row"><span>Preferred batch</span><strong><?php echo html_escape($lead->preferred_batch ?: '—'); ?></strong></div>
+          <?php endif; ?>
           <div class="lead-info-row"><span>Source</span><strong><?php echo html_escape($lead->source_name ?: '—'); ?></strong></div>
           <div class="lead-info-row"><span>Priority</span><strong><?php echo html_escape($lead->priority_name ?: '—'); ?></strong></div>
           <div class="lead-info-row"><span>Value</span><strong><?php echo $lead->estimated_value !== null ? '$'.number_format((float)$lead->estimated_value, 2) : '—'; ?></strong></div>

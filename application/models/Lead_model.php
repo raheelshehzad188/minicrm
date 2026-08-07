@@ -122,6 +122,9 @@ class Lead_model extends MY_Model {
 			$this->db->or_like('leads.email', $s);
 			$this->db->or_like('leads.phone', $s);
 			$this->db->or_like('leads.mobile', $s);
+			$this->db->or_like('leads.branch', $s);
+			$this->db->or_like('leads.treatment', $s);
+			$this->db->or_like('leads.course', $s);
 			$this->db->group_end();
 		}
 		if ( ! empty($filters['status_id']))
@@ -163,6 +166,42 @@ class Lead_model extends MY_Model {
 				WHERE ltm.lead_id = leads.id AND ltm.tag_id = ' . (int) $filters['tag_id'] . '
 			)', NULL, FALSE);
 		}
+		if ( ! empty($filters['lead_type']))
+		{
+			$this->db->where('leads.lead_type', $filters['lead_type']);
+		}
+	}
+
+	/**
+	 * Count leads by type within optional filters/date range (no soft-deleted).
+	 */
+	public function count_by_type($lead_type = NULL, $filters = array())
+	{
+		$this->apply_tenant_scope();
+		$this->db->from($this->table);
+		$this->db->where('leads.deleted_at IS NULL', NULL, FALSE);
+		if ($lead_type)
+		{
+			$this->db->where('leads.lead_type', $lead_type);
+		}
+		if ( ! empty($filters['date_from']))
+		{
+			$this->db->where('leads.created_at >=', $filters['date_from'] . ' 00:00:00');
+		}
+		if ( ! empty($filters['date_to']))
+		{
+			$this->db->where('leads.created_at <=', $filters['date_to'] . ' 23:59:59');
+		}
+		if ( ! empty($filters['assigned_to']))
+		{
+			$this->db->where('leads.assigned_to', (int) $filters['assigned_to']);
+		}
+		$CI =& get_instance();
+		if (isset($CI->lead_lib) && empty($filters['skip_visibility']))
+		{
+			$CI->lead_lib->apply_visibility_scope('leads');
+		}
+		return (int) $this->db->count_all_results();
 	}
 
 	public function kanban_by_status($filters = array())

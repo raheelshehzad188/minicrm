@@ -64,10 +64,17 @@ $current = isset($active_menu) ? $active_menu : '';
 
     <div class="mino-nav-section">
       <div class="mino-nav-section__label">Insights</div>
+      <?php if (can('reports.view')): ?>
+      <a href="<?php echo site_url('reports/leads'); ?>" class="mino-nav-link <?php echo $current === 'reports' ? 'active' : ''; ?>">
+        <i class="fas fa-chart-line nav-icon"></i>
+        <span class="nav-text">Reports</span>
+      </a>
+      <?php else: ?>
       <a href="#" class="mino-nav-link">
         <i class="fas fa-chart-line nav-icon"></i>
         <span class="nav-text">Reports</span>
       </a>
+      <?php endif; ?>
       <a href="#" class="mino-nav-link">
         <i class="fas fa-bullseye nav-icon"></i>
         <span class="nav-text">Goals</span>

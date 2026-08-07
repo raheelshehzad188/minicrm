@@ -124,4 +124,18 @@ class Organization extends Auth_Controller {
 			'logo'     => $result['path'],
 		));
 	}
+
+	public function regenerate_api_key()
+	{
+		$this->permission_lib->require('organization.edit');
+		if ($this->input->method() !== 'post')
+		{
+			return $this->json_response(FALSE, 'Invalid method.', array(), 405);
+		}
+		$org_id = $this->organization_lib->id();
+		$key = $this->Organization_model->regenerate_api_key($org_id);
+		$this->activity_lib->log('update', 'Regenerated organization API key', 'organization', $org_id);
+		$this->organization_lib->boot();
+		return $this->json_response(TRUE, 'API key regenerated.', array('api_key' => $key));
+	}
 }

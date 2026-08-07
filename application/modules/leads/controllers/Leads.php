@@ -852,14 +852,22 @@ class Leads extends Auth_Controller {
 		$format = $this->input->get('format') ?: 'csv';
 
 		$filename = 'leads_export_' . date('Ymd_His');
-		$header = array('ID','Title','First Name','Last Name','Company','Email','Phone','Mobile','Website','City','State','Country','Status','Source','Pipeline','Stage','Assignee','Priority','Estimated Value','Expected Close','Created At');
+		$header = array('ID','Lead Type','Title','First Name','Last Name','Company','Email','Phone','Mobile','Branch','Treatment','Course','Preferred Batch','Appointment Date','Appointment Time','Website','City','State','Country','Status','Source','Pipeline','Stage','Assignee','Priority','Estimated Value','Expected Close','Created At');
 
 		$lines = array();
 		$lines[] = $header;
 		foreach ($rows as $r)
 		{
 			$lines[] = array(
-				$r->id, $r->title, $r->first_name, $r->last_name, $r->company_name, $r->email, $r->phone, $r->mobile,
+				$r->id,
+				isset($r->lead_type) ? $r->lead_type : '',
+				$r->title, $r->first_name, $r->last_name, $r->company_name, $r->email, $r->phone, $r->mobile,
+				isset($r->branch) ? $r->branch : '',
+				isset($r->treatment) ? $r->treatment : '',
+				isset($r->course) ? $r->course : '',
+				isset($r->preferred_batch) ? $r->preferred_batch : '',
+				isset($r->appointment_date) ? $r->appointment_date : '',
+				isset($r->appointment_time) ? $r->appointment_time : '',
 				$r->website, $r->city, $r->state, $r->country, $r->status_name, $r->source_name, $r->pipeline_name,
 				$r->stage_name, $r->assignee_name, $r->priority_name, $r->estimated_value, $r->expected_close_date, $r->created_at,
 			);
@@ -933,9 +941,10 @@ class Leads extends Auth_Controller {
 		fclose($handle);
 
 		$mapping = array(
-			'Title' => 'title', 'First Name' => 'first_name', 'Last Name' => 'last_name',
+			'Title' => 'title', 'Lead Type' => 'lead_type', 'First Name' => 'first_name', 'Last Name' => 'last_name',
 			'Company' => 'company_name', 'Email' => 'email', 'Phone' => 'phone', 'Mobile' => 'mobile',
-			'Website' => 'website', 'City' => 'city', 'Status' => 'status', 'Source' => 'source',
+			'Website' => 'website', 'City' => 'city', 'Branch' => 'branch', 'Treatment' => 'treatment',
+			'Course' => 'course', 'Preferred Batch' => 'preferred_batch', 'Status' => 'status', 'Source' => 'source',
 		);
 
 		return $this->json_response(TRUE, 'OK', array(
@@ -1000,7 +1009,18 @@ class Leads extends Auth_Controller {
 				if ($src) $source_id = (int) $src->id;
 			}
 
+			$lead_type = $this->lead_lib->default_lead_type();
+			if ( ! empty($row['lead_type']))
+			{
+				$normalized = $this->lead_lib->normalize_lead_type($row['lead_type']);
+				if ($normalized)
+				{
+					$lead_type = $normalized;
+				}
+			}
+
 			$payload = array(
+				'lead_type'     => $lead_type,
 				'title'         => $title,
 				'first_name'    => isset($row['first_name']) ? $row['first_name'] : NULL,
 				'last_name'     => isset($row['last_name']) ? $row['last_name'] : NULL,
@@ -1010,6 +1030,10 @@ class Leads extends Auth_Controller {
 				'mobile'        => $mobile ?: NULL,
 				'website'       => isset($row['website']) ? $row['website'] : NULL,
 				'city'          => isset($row['city']) ? $row['city'] : NULL,
+				'branch'        => isset($row['branch']) ? $row['branch'] : NULL,
+				'treatment'     => isset($row['treatment']) ? $row['treatment'] : NULL,
+				'course'        => isset($row['course']) ? $row['course'] : NULL,
+				'preferred_batch'=> isset($row['preferred_batch']) ? $row['preferred_batch'] : NULL,
 				'lead_status_id'=> $status_id,
 				'lead_source_id'=> $source_id,
 				'pipeline_id'   => $defaults['pipeline_id'],
@@ -1161,6 +1185,7 @@ class Leads extends Auth_Controller {
 		};
 
 		$data = array(
+			'lead_types' => $this->lead_lib->lead_types(),
 			'statuses'   => $json ? $map($this->Crm_lookup_model->statuses()) : $this->Crm_lookup_model->statuses(),
 			'sources'    => $json ? $map($this->Crm_lookup_model->sources()) : $this->Crm_lookup_model->sources(),
 			'tags'       => $json ? $map($this->Crm_lookup_model->tags()) : $this->Crm_lookup_model->tags(),
@@ -1175,6 +1200,11 @@ class Leads extends Auth_Controller {
 
 	protected function _filters_from_input()
 	{
+		$lead_type = $this->input->get_post('lead_type', TRUE);
+		if ($lead_type)
+		{
+			$lead_type = $this->lead_lib->normalize_lead_type($lead_type);
+		}
 		return array(
 			'search'      => $this->input->get_post('search', TRUE),
 			'status_id'   => $this->input->get_post('status_id', TRUE),
@@ -1187,12 +1217,14 @@ class Leads extends Auth_Controller {
 			'date_from'   => $this->input->get_post('date_from', TRUE),
 			'date_to'     => $this->input->get_post('date_to', TRUE),
 			'trashed'     => $this->input->get_post('trashed', TRUE),
+			'lead_type'   => $lead_type ?: '',
 		);
 	}
 
 	protected function _validated_payload()
 	{
-		$this->form_validation->set_rules('title', 'Lead Title', 'required|trim|max_length[200]');
+		$this->form_validation->set_rules('lead_type', 'Lead Type', 'required|trim|max_length[50]');
+		$this->form_validation->set_rules('title', 'Name', 'required|trim|max_length[200]');
 		$this->form_validation->set_rules('first_name', 'First Name', 'trim|max_length[100]');
 		$this->form_validation->set_rules('last_name', 'Last Name', 'trim|max_length[100]');
 		$this->form_validation->set_rules('company_name', 'Company', 'trim|max_length[150]');
@@ -1213,10 +1245,23 @@ class Leads extends Auth_Controller {
 		$this->form_validation->set_rules('priority_id', 'Priority', 'integer');
 		$this->form_validation->set_rules('estimated_value', 'Estimated Value', 'trim');
 		$this->form_validation->set_rules('expected_close_date', 'Expected Close', 'trim');
-		$this->form_validation->set_rules('description', 'Description', 'trim');
+		$this->form_validation->set_rules('description', 'Notes', 'trim');
+		$this->form_validation->set_rules('branch', 'Branch', 'trim|max_length[150]');
+		$this->form_validation->set_rules('treatment', 'Treatment', 'trim|max_length[150]');
+		$this->form_validation->set_rules('course', 'Course', 'trim|max_length[150]');
+		$this->form_validation->set_rules('preferred_batch', 'Preferred Batch', 'trim|max_length[100]');
+		$this->form_validation->set_rules('appointment_date', 'Appointment Date', 'trim');
+		$this->form_validation->set_rules('appointment_time', 'Appointment Time', 'trim');
 
 		if ($this->form_validation->run() === FALSE)
 		{
+			return FALSE;
+		}
+
+		$lead_type = $this->lead_lib->normalize_lead_type($this->input->post('lead_type', TRUE));
+		if ( ! $lead_type)
+		{
+			$this->_lead_validation_error = 'Invalid lead type.';
 			return FALSE;
 		}
 
@@ -1233,8 +1278,11 @@ class Leads extends Auth_Controller {
 
 		$est = $this->input->post('estimated_value', TRUE);
 		$close = $this->input->post('expected_close_date', TRUE);
+		$appt_date = $this->input->post('appointment_date', TRUE);
+		$appt_time = $this->input->post('appointment_time', TRUE);
 
-		return array(
+		$payload = array(
+			'lead_type'           => $lead_type,
 			'title'               => $this->input->post('title', TRUE),
 			'first_name'          => $this->input->post('first_name', TRUE) ?: NULL,
 			'last_name'           => $this->input->post('last_name', TRUE) ?: NULL,
@@ -1257,7 +1305,27 @@ class Leads extends Auth_Controller {
 			'estimated_value'     => ($est !== '' && $est !== NULL) ? (float) $est : NULL,
 			'expected_close_date' => $close ?: NULL,
 			'description'         => $this->input->post('description', TRUE) ?: NULL,
+			'branch'              => $this->input->post('branch', TRUE) ?: NULL,
+			'treatment'           => NULL,
+			'course'              => NULL,
+			'preferred_batch'     => NULL,
+			'appointment_date'    => NULL,
+			'appointment_time'    => NULL,
 		);
+
+		if ($lead_type === 'clinic')
+		{
+			$payload['treatment'] = $this->input->post('treatment', TRUE) ?: NULL;
+			$payload['appointment_date'] = $appt_date ?: NULL;
+			$payload['appointment_time'] = $appt_time ?: NULL;
+		}
+		elseif ($lead_type === 'academy')
+		{
+			$payload['course'] = $this->input->post('course', TRUE) ?: NULL;
+			$payload['preferred_batch'] = $this->input->post('preferred_batch', TRUE) ?: NULL;
+		}
+
+		return $payload;
 	}
 
 	protected function _default_ids()
@@ -1297,8 +1365,11 @@ class Leads extends Auth_Controller {
 	protected function _serialize_lead($r, $tags = array())
 	{
 		$name = trim(($r->first_name ?: '') . ' ' . ($r->last_name ?: ''));
+		$lead_type = isset($r->lead_type) ? $r->lead_type : $this->lead_lib->default_lead_type();
 		return array(
 			'id'                  => (int) $r->id,
+			'lead_type'           => $lead_type,
+			'lead_type_label'     => $this->lead_lib->lead_type_label($lead_type),
 			'title'               => $r->title,
 			'first_name'          => $r->first_name,
 			'last_name'           => $r->last_name,
@@ -1322,6 +1393,12 @@ class Leads extends Auth_Controller {
 			'estimated_value'     => $r->estimated_value,
 			'expected_close_date' => $r->expected_close_date,
 			'description'         => $r->description,
+			'branch'              => isset($r->branch) ? $r->branch : NULL,
+			'treatment'           => isset($r->treatment) ? $r->treatment : NULL,
+			'course'              => isset($r->course) ? $r->course : NULL,
+			'preferred_batch'     => isset($r->preferred_batch) ? $r->preferred_batch : NULL,
+			'appointment_date'    => isset($r->appointment_date) ? $r->appointment_date : NULL,
+			'appointment_time'    => isset($r->appointment_time) ? $r->appointment_time : NULL,
 			'status_name'         => $r->status_name,
 			'status_color'        => $r->status_color,
 			'source_name'         => $r->source_name,

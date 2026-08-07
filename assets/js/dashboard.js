@@ -33,6 +33,7 @@
       range: 'last_30_days',
       startDate: '',
       endDate: '',
+      leadType: '',
       loading: false
     },
 
@@ -81,6 +82,11 @@
       $('#btnRefreshDashboard').on('click', function () {
         self.loadData(true);
       });
+
+      $('#dashLeadType').on('change', function () {
+        self.state.leadType = $(this).val() || '';
+        self.loadData(true);
+      });
     },
 
     setRange: function (range) {
@@ -106,6 +112,9 @@
       if (this.state.range === 'custom') {
         params.start_date = this.state.startDate;
         params.end_date = this.state.endDate;
+      }
+      if (this.state.leadType) {
+        params.lead_type = this.state.leadType;
       }
 
       var self = this;

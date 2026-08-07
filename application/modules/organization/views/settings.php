@@ -92,5 +92,40 @@
         <p class="mino-text-xs mino-text-muted mt-3 mb-0">JPG, PNG or WEBP. Max 2MB.</p>
       </div>
     </div>
+
+    <div class="mino-card mt-4">
+      <div class="mino-card-header">
+        <h3 class="mino-card-title">Webhook API</h3>
+      </div>
+      <div class="mino-card-body">
+        <p class="mino-text-sm mino-text-muted mb-2">Use this key with <code>POST /api/v1/leads</code> via the <code>X-API-Key</code> header.</p>
+        <label class="form-label">API key</label>
+        <input type="text" class="form-control form-control-sm mb-2" id="orgApiKey" readonly value="<?php echo html_escape(isset($org->api_key) ? $org->api_key : ''); ?>">
+        <?php if ($can_edit): ?>
+        <button type="button" class="btn btn-sm btn-secondary" id="btnRegenApiKey"><i class="fas fa-key"></i> Regenerate key</button>
+        <script>
+        (function ($) {
+          $('#btnRegenApiKey').on('click', function () {
+            if (!confirm('Regenerate API key? Existing webhooks must be updated.')) return;
+            var $csrf = $('input[name="mino_csrf"]').first();
+            var data = {};
+            if ($csrf.length) data[$csrf.attr('name')] = $csrf.val();
+            $.post('<?php echo site_url('organization/regenerate_api_key'); ?>', data, function (resp) {
+              if (resp.csrf_name && resp.csrf_hash) {
+                $('input[name="' + resp.csrf_name + '"]').val(resp.csrf_hash);
+              }
+              if (resp.success && resp.data && resp.data.api_key) {
+                $('#orgApiKey').val(resp.data.api_key);
+                if (window.MinoComponents) MinoComponents.toast({ icon: 'success', title: resp.message });
+              } else if (window.MinoComponents) {
+                MinoComponents.toast({ icon: 'error', title: (resp && resp.message) || 'Failed' });
+              }
+            }, 'json');
+          });
+        })(jQuery);
+        </script>
+        <?php endif; ?>
+      </div>
+    </div>
   </div>
 </div>
