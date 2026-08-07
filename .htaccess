@@ -3,8 +3,8 @@
     RewriteEngine On
 
     # Hostinger / domain root: use /
-    # Local XAMPP subfolder: /minicrm/
-    RewriteBase /minicrm/
+    # Local XAMPP subfolder: change to RewriteBase /minicrm/
+    RewriteBase /
 
     # Skip real files and directories
     RewriteCond %{REQUEST_FILENAME} !-f
